@@ -1,0 +1,20 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -f ./client/Dockerfile.dev -t amitavak/react-test ./client
+
+script:
+    - docker run -e CI=true amitavak/react-test npm test
+
+after_success:
+    - docker build -t amitavak/multi-client ./client
+    - docker build -t amitavak/multi-server ./server
+    - docker build -t amitavak/multi-nginx ./nginx
+    - docker build -t amitavak/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push amitavak/multi-client
+    - docker push amitavak/multi-server
+    - docker push amitavak/multi-nginx
+    - docker push amitavak/multi-worker
