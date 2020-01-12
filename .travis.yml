@@ -18,3 +18,15 @@ after_success:
     - docker push amitavak/multi-server
     - docker push amitavak/multi-nginx
     - docker push amitavak/multi-worker
+
+deploy:
+    provider: elasticbeanstalk
+    region: ap-south-1
+    app: multi-docker
+    env: MultiDocker-Dev
+    bucket_name: elasticbeanstalk-ap-south-1-609591418103
+    bucket_path: docker_multi
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

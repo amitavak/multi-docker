@@ -1,0 +1,39 @@
+{
+    "AWSEBDockerrun/version": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "amitavak/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "amitavak/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "amitavak/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "amitavak/multi-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "postMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
